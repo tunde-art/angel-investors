@@ -1,0 +1,641 @@
+// app/page.tsx
+
+"use client";
+
+import { useState } from "react";
+
+const investors = [
+  {
+    name: "Y Combinator",
+    type: "Accelerator",
+    location: "United States",
+    stages: ["Pre-Seed", "Seed"],
+    sectors: ["Technology", "SaaS", "AI"],
+  },
+  {
+    name: "Global Founders Capital",
+    type: "Venture Capital",
+    location: "United States",
+    stages: ["Seed", "Series A"],
+    sectors: ["Technology", "Fintech", "SaaS"],
+  },
+  {
+    name: "Norrsken22",
+    type: "Venture Capital",
+    location: "Africa",
+    stages: ["Seed", "Series A"],
+    sectors: ["Technology", "Fintech", "Climate"],
+  },
+  {
+    name: "Novastar Ventures",
+    type: "Venture Capital",
+    location: "Africa",
+    stages: ["Seed", "Series A"],
+    sectors: ["Technology", "Healthcare", "Climate"],
+  },
+  {
+    name: "Shorooq Partners",
+    type: "Venture Capital",
+    location: "Middle East",
+    stages: ["Seed", "Series A"],
+    sectors: ["Fintech", "Technology", "Web3"],
+  },
+];
+
+const crowdfunding = [
+  {
+    name: "Kickstarter",
+    category: "Rewards",
+    url: "https://www.kickstarter.com",
+  },
+  {
+    name: "Indiegogo",
+    category: "Rewards",
+    url: "https://www.indiegogo.com",
+  },
+  {
+    name: "GoFundMe",
+    category: "Donation",
+    url: "https://www.gofundme.com",
+  },
+  {
+    name: "Republic",
+    category: "Equity",
+    url: "https://republic.com",
+  },
+  {
+    name: "StartEngine",
+    category: "Equity",
+    url: "https://www.startengine.com",
+  },
+  {
+    name: "Wefunder",
+    category: "Equity",
+    url: "https://wefunder.com",
+  },
+  {
+    name: "Crowdcube",
+    category: "Equity",
+    url: "https://www.crowdcube.com",
+  },
+  {
+    name: "Fundable",
+    category: "Rewards / Equity",
+    url: "https://www.fundable.com",
+  },
+  {
+    name: "IFundWomen",
+    category: "Crowdfunding",
+    url: "https://ifundwomen.com",
+  },
+  {
+    name: "Kiva",
+    category: "Crowdlending",
+    url: "https://www.kiva.org",
+  },
+];
+
+const creators = [
+  {
+    title: "Terra Planter",
+    platform: "Kickstarter",
+    url: "https://www.kickstarter.com/projects/terraplanter/terra-planter-the-inside-out-hydroponic-planter-pot",
+  },
+  {
+    title: "UVMask",
+    platform: "Kickstarter",
+    url: "https://www.kickstarter.com/projects/umsystems/uvmask-inactivate-9999-of-all-pathogens-and-air-pollutants",
+  },
+  {
+    title: "Tiko 3D",
+    platform: "Kickstarter",
+    url: "https://www.kickstarter.com/projects/tiko3d/tiko-the-unibody-3d-printer",
+  },
+  {
+    title: "Creator Campaign",
+    platform: "GoFundMe",
+    url: "https://gofund.me/24e816377",
+  },
+  {
+    title: "Creator Campaign",
+    platform: "GoFundMe",
+    url: "https://gofund.me/052c5bf68",
+  },
+];
+
+const plans = [
+  {
+    name: "Basic",
+    monthly: 199,
+    yearly: 349,
+    features: [
+      "Investor directory",
+      "Basic investor filters",
+      "Startup discovery",
+      "Crowdfunding directory",
+      "Saved investors",
+    ],
+  },
+  {
+    name: "Growth",
+    monthly: 489,
+    yearly: 609,
+    popular: true,
+    features: [
+      "Everything in Basic",
+      "Advanced investor filters",
+      "Investor matching",
+      "Advanced company data",
+      "Outreach tracking",
+      "Priority support",
+    ],
+  },
+  {
+    name: "Premium",
+    monthly: null,
+    yearly: null,
+    features: [
+      "Everything in Growth",
+      "Advanced intelligence",
+      "Premium investor data",
+      "Founder/investor matching",
+      "Dedicated support",
+      "Custom research",
+    ],
+  },
+];
+
+export default function Home() {
+  const [search, setSearch] = useState("");
+  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+
+  const filteredInvestors = investors.filter((investor) =>
+    `${investor.name} ${investor.type} ${investor.location} ${investor.sectors.join(
+      " "
+    )}`
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
+  return (
+    <main className="min-h-screen bg-[#fafafa] text-[#111]">
+
+      {/* NAVBAR */}
+      <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <a href="/" className="text-2xl font-black tracking-tight">
+            Angel<span className="text-blue-600">Support</span>
+          </a>
+
+          <nav className="hidden gap-8 md:flex">
+            <a href="#investors">Investors</a>
+            <a href="#platforms">Crowdfunding</a>
+            <a href="#creators">Creators</a>
+            <a href="#pricing">Pricing</a>
+          </nav>
+
+          <div className="flex gap-3">
+            <a
+              href="/login"
+              className="rounded-lg px-4 py-2 font-medium"
+            >
+              Log in
+            </a>
+
+            <a
+              href="/signup"
+              className="rounded-lg bg-blue-600 px-5 py-2 text-white font-semibold"
+            >
+              Get started
+            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section className="border-b bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 text-center">
+          <div className="mx-auto mb-5 inline-flex rounded-full border bg-gray-50 px-4 py-2 text-sm">
+            The fundraising intelligence platform for ambitious founders
+          </div>
+
+          <h1 className="mx-auto max-w-5xl text-5xl font-black tracking-tight md:text-7xl">
+            Find the right investors.
+            <br />
+            <span className="text-blue-600">
+              Raise with confidence.
+            </span>
+          </h1>
+
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-gray-600">
+            Discover investors, venture capital firms, accelerators and
+            crowdfunding opportunities that match your startup.
+          </p>
+
+          <div className="mx-auto mt-10 flex max-w-2xl overflow-hidden rounded-xl border bg-white shadow-lg">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search investors, sectors, countries..."
+              className="w-full px-5 py-4 outline-none"
+            />
+            <button className="bg-blue-600 px-7 font-bold text-white">
+              Search
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* TRUSTED BY */}
+      <section className="border-b bg-gray-50 py-10">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="mb-7 text-center text-sm font-semibold uppercase tracking-widest text-gray-500">
+            Trusted by founders building companies across the world's leading
+            startup ecosystems
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 text-center md:grid-cols-6">
+            {[
+              "Microsoft",
+              "Google",
+              "Amazon",
+              "Meta",
+              "Stripe",
+              "OpenAI",
+            ].map((brand) => (
+              <div
+                key={brand}
+                className="rounded-xl border bg-white px-4 py-5 font-bold text-gray-500"
+              >
+                {brand}
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-5 text-center text-xs text-gray-500">
+            Replace these with verified brands/portfolio companies for which
+            you have permission to display logos or attribution.
+          </p>
+        </div>
+      </section>
+
+      {/* INVESTORS */}
+      <section id="investors" className="mx-auto max-w-7xl px-6 py-24">
+        <div className="mb-12">
+          <p className="font-semibold text-blue-600">INVESTOR DATABASE</p>
+          <h2 className="mt-2 text-4xl font-black">
+            Discover investors that fit your raise
+          </h2>
+          <p className="mt-4 max-w-2xl text-gray-600">
+            Search by investor type, geography, stage, sector and other
+            fundraising criteria.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {filteredInvestors.map((investor) => (
+            <article
+              key={investor.name}
+              className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl"
+            >
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-600">
+                {investor.name.charAt(0)}
+              </div>
+
+              <h3 className="text-xl font-bold">{investor.name}</h3>
+
+              <p className="mt-1 text-sm text-gray-500">
+                {investor.type} · {investor.location}
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {investor.stages.map((stage) => (
+                  <span
+                    key={stage}
+                    className="rounded-full bg-gray-100 px-3 py-1 text-xs"
+                  >
+                    {stage}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                {investor.sectors.map((sector) => (
+                  <span
+                    key={sector}
+                    className="rounded-full bg-blue-50 px-3 py-1 text-xs text-blue-700"
+                  >
+                    {sector}
+                  </span>
+                ))}
+              </div>
+
+              <button className="mt-6 w-full rounded-lg border py-3 font-semibold hover:bg-gray-50">
+                View investor
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* CROWDFUNDING */}
+      <section id="platforms" className="bg-[#111] py-24 text-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="font-semibold text-blue-400">CROWDFUNDING</p>
+
+          <h2 className="mt-2 text-4xl font-black">
+            Every major fundraising route in one place
+          </h2>
+
+          <p className="mt-4 max-w-2xl text-gray-400">
+            Compare equity, rewards, donation and lending platforms.
+          </p>
+
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+            {crowdfunding.map((platform) => (
+              <a
+                key={platform.name}
+                href={platform.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-gray-800 p-5 hover:border-blue-500"
+              >
+                <h3 className="font-bold">{platform.name}</h3>
+                <p className="mt-2 text-sm text-gray-400">
+                  {platform.category}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CREATOR CASE STUDIES */}
+      <section id="creators" className="mx-auto max-w-7xl px-6 py-24">
+        <p className="font-semibold text-blue-600">CREATOR STORIES</p>
+
+        <h2 className="mt-2 text-4xl font-black">
+          See real fundraising campaigns
+        </h2>
+
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {creators.map((creator) => (
+            <a
+              key={creator.url}
+              href={creator.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl border bg-white p-6 hover:shadow-lg"
+            >
+              <span className="text-sm font-semibold text-blue-600">
+                {creator.platform}
+              </span>
+
+              <h3 className="mt-3 text-xl font-bold">
+                {creator.title}
+              </h3>
+
+              <span className="mt-6 inline-block font-semibold">
+                View campaign →
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="bg-gray-50 py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center">
+            <p className="font-semibold text-blue-600">
+              FOUNDER FEEDBACK
+            </p>
+
+            <h2 className="mt-2 text-4xl font-black">
+              What founders are saying
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-2xl text-gray-600">
+              Only publish testimonials that have been genuinely submitted or
+              publicly attributed to the creator.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            <div className="rounded-2xl border bg-white p-7">
+              <div className="text-yellow-500">★★★★★</div>
+              <p className="mt-5 text-gray-700">
+                Verified creator testimonial goes here.
+              </p>
+              <p className="mt-5 font-bold">Verified creator</p>
+            </div>
+
+            <div className="rounded-2xl border bg-white p-7">
+              <div className="text-yellow-500">★★★★★</div>
+              <p className="mt-5 text-gray-700">
+                Verified creator testimonial goes here.
+              </p>
+              <p className="mt-5 font-bold">Verified creator</p>
+            </div>
+
+            <div className="rounded-2xl border bg-white p-7">
+              <div className="text-yellow-500">★★★★★</div>
+              <p className="mt-5 text-gray-700">
+                Verified creator testimonial goes here.
+              </p>
+              <p className="mt-5 font-bold">Verified creator</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PRICING */}
+      <section id="pricing" className="mx-auto max-w-7xl px-6 py-24">
+        <div className="text-center">
+          <p className="font-semibold text-blue-600">PRICING</p>
+
+          <h2 className="mt-2 text-5xl font-black">
+            Choose your fundraising toolkit
+          </h2>
+
+          <div className="mt-8 inline-flex rounded-xl border bg-gray-100 p-1">
+            <button
+              onClick={() => setBilling("monthly")}
+              className={`rounded-lg px-5 py-2 ${
+                billing === "monthly"
+                  ? "bg-white shadow"
+                  : ""
+              }`}
+            >
+              Monthly
+            </button>
+
+            <button
+              onClick={() => setBilling("yearly")}
+              className={`rounded-lg px-5 py-2 ${
+                billing === "yearly"
+                  ? "bg-white shadow"
+                  : ""
+              }`}
+            >
+              Yearly
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          {plans.map((plan) => {
+            const price =
+              billing === "monthly"
+                ? plan.monthly
+                : plan.yearly;
+
+            return (
+              <article
+                key={plan.name}
+                className={`rounded-3xl border bg-white p-8 ${
+                  plan.popular
+                    ? "border-blue-600 ring-2 ring-blue-100"
+                    : ""
+                }`}
+              >
+                {plan.popular && (
+                  <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-bold text-white">
+                    MOST POPULAR
+                  </span>
+                )}
+
+                <h3 className="mt-5 text-2xl font-black">
+                  {plan.name}
+                </h3>
+
+                <div className="mt-5">
+                  {price ? (
+                    <>
+                      <span className="text-5xl font-black">
+                        ${price}
+                      </span>
+                      <span className="text-gray-500">
+                        /{billing === "monthly" ? "month" : "year"}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-3xl font-black">
+                      Custom
+                    </span>
+                  )}
+                </div>
+
+                <ul className="mt-8 space-y-4">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex gap-3">
+                      <span className="text-green-600">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <button className="mt-10 w-full rounded-xl bg-blue-600 py-4 font-bold text-white">
+                  {price ? "Choose plan" : "Contact us"}
+                </button>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-12 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="text-xl font-black">
+              Angel<span className="text-blue-600">Support</span>
+            </div>
+
+            <p className="mt-2 text-sm text-gray-500">
+              Investor discovery and fundraising intelligence.
+            </p>
+          </div>
+
+          <a
+            href="mailto:angelsupportt@gmail.com"
+            className="font-semibold"
+          >
+            angelsupportt@gmail.com
+          </a>
+        </div>
+      </footer>
+    </main>
+  );
+}
+// lib/payments.ts
+
+export const CRYPTO_WALLETS = {
+  BTC: {
+    network: "Bitcoin",
+    address:
+      "bc1pd6h28gkg26afgv7s7qs6g38na9449aaxs75y6l5z286jwa6m5heqk7cyta",
+  },
+
+  SOL: {
+    network: "Solana",
+    address:
+      "2UbhjWRCfeFxiCk3gkSd2ji1n6B3mshnx3Ww5jvwzwrg",
+  },
+
+  ETH: {
+    network: "Ethereum / ERC-20",
+    address:
+      "0xF4CBAE41d27E92874c7705e22c8dd17eed81057E",
+  },
+
+  BNB: {
+    network: "BNB Chain",
+    address:
+      "0xF4CBAE41d27E92874c7705e22c8dd17eed81057E",
+  },
+};
+<div className="rounded-2xl border bg-white p-6">
+  <h2 className="text-2xl font-bold">
+    Pay with cryptocurrency
+  </h2>
+
+  <p className="mt-2 text-gray-500">
+    Select your network and send the exact amount shown.
+  </p>
+
+  <div className="mt-6 space-y-4">
+    {Object.entries(CRYPTO_WALLETS).map(([coin, wallet]) => (
+      <div key={coin} className="rounded-xl bg-gray-50 p-4">
+        <div className="font-bold">{coin}</div>
+
+        <div className="mt-2 break-all font-mono text-sm">
+          {wallet.address}
+        </div>
+
+        <div className="mt-1 text-xs text-gray-500">
+          Network: {wallet.network}
+        </div>
+
+        <button className="mt-3 rounded-lg bg-black px-4 py-2 text-sm text-white">
+          Copy address
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
+Founder
+   ↓
+Signup
+   ↓
+Validate email
+   ↓
+Hash password
+   ↓
+Save account in database
+   ↓
+Send notification to angelsupportt@gmail.com
+   ↓
+Founder verifies email
+   ↓
+Account activated
